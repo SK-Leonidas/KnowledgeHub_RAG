@@ -113,3 +113,113 @@ Hybrid Score
 
 ```
 KnowledgeHub_RAG/
+
+├── data/
+│
+├── docs/
+│
+├── notebooks/
+│   ├── KnowledgeHub_RAG_v0.1.ipynb
+│   ├── KnowledgeHub_RAG_v0.2.ipynb
+│   ├── KnowledgeHub_RAG_v0.3.ipynb
+│   └── KnowledgeHub_RAG_v0.4.ipynb
+│
+├── src/
+│
+├── tests/
+│
+├── README.md
+├── requirements.txt
+└── LICENSE
+```
+
+---
+
+# 🛠️ Technologies Used
+
+- Python
+- Google Colab
+- PyPDF
+- SentenceTransformers
+- Hugging Face Transformers
+- FAISS
+- BM25
+- NumPy
+
+---
+
+# 🧠 RAG Evolution
+
+```
+PDF Documents
+      │
+      ▼
+Chunking
+      │
+      ▼
+Embeddings
+      │
+      ▼
+FAISS
+      │
+      ▼
+Metadata
+      │
+      ▼
+Hybrid Search
+      │
+      ▼
+Cross Encoder
+      │
+      ▼
+Knowledge Assistant
+```
+
+---
+
+# 🎯 Learning Goals
+
+This repository explores the major building blocks of Retrieval-Augmented Generation systems.
+
+- Document ingestion
+- Chunking strategies
+- Embeddings
+- Semantic Search
+- FAISS
+- Metadata
+- Hybrid Search
+- Re-ranking
+- Retrieval pipelines
+- Production deployment
+
+---
+
+# 🚀 Upcoming Version
+
+## v0.5 — Cross-Encoder Re-ranking
+
+Planned improvements:
+
+- Re-rank retrieved chunks using a Cross-Encoder
+- Improve answer quality
+- Better query-passage relevance
+- Production-style retrieval pipeline
+
+---
+
+# 🌟 Future Roadmap
+
+- Conversational Memory
+- Streamlit UI
+- FastAPI Backend
+- Multi-format document support
+- Production deployment
+- Knowledge Assistant v1.0
+
+---
+
+# 👨‍💻 Author
+
+**Surendaranath Kanniyappan**
+
+Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.
