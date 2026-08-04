@@ -1,225 +1,175 @@
-# 📚 KnowledgeHub_RAG
+# 📚 KnowledgeHub RAG
 
-> Building a Retrieval-Augmented Generation (RAG) system from scratch — one version at a time.
+> A Retrieval-Augmented Generation (RAG) system that enables intelligent question answering over PDF documents using Hybrid Search and Large Language Models.
 
-KnowledgeHub_RAG is a hands-on project documenting the evolution of a Retrieval-Augmented Generation (RAG) system. Rather than building one large application, this repository demonstrates how a simple document question-answering pipeline gradually evolves into a production-ready knowledge assistant.
-
-Each version introduces **one major capability**, making the repository a learning journey through modern RAG architecture.
-
----
-
-# 🚀 Current Progress
-
-| Version | Status | Description |
-|----------|--------|-------------|
-| v0.1 | ✅ Completed | Basic Multi-Document RAG |
-| v0.2 | ✅ Completed | FAISS Vector Search |
-| v0.3 | ✅ Completed | Metadata-Aware Retrieval |
-| v0.4 | ✅ Completed | Hybrid Retrieval (FAISS + BM25) |
-| v0.5 | 🚧 Next | Cross-Encoder Re-ranking |
-| v0.6 | ⏳ Planned | Conversational Memory |
-| v0.7 | ⏳ Planned | Streamlit Interface |
-| v0.8 | ⏳ Planned | FastAPI Backend |
-| v0.9 | ⏳ Planned | Multi-format Document Support |
-| v1.0 | 🎯 Goal | Production-ready Knowledge Assistant |
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-green)
+![SentenceTransformers](https://img.shields.io/badge/SentenceTransformers-Embeddings-orange)
+![TinyLlama](https://img.shields.io/badge/TinyLlama-LLM-purple)
+![License](https://img.shields.io/badge/License-MIT-red)
 
 ---
 
-# 📖 Version History
+## 🚀 Overview
 
----
+KnowledgeHub RAG is an end-to-end Retrieval-Augmented Generation (RAG) project that retrieves relevant information from PDF documents and generates natural language answers using an instruction-tuned Large Language Model.
 
-## ✅ v0.1 — Basic Multi-Document RAG
-
-### Features
-
-- Load multiple PDF documents
-- Extract text using PyPDF
-- Paragraph-aware chunking
-- SentenceTransformer embeddings
-- Cosine similarity retrieval using NumPy
-- Basic Question Answering pipeline
-
-### Technologies
-
-- Python
-- Google Colab
-- PyPDF
-- SentenceTransformers
-- Transformers
-- NumPy
-
----
-
-## ✅ v0.2 — FAISS Vector Search
-
-### Improvements
-
-- Replaced NumPy similarity search with FAISS
-- Built a FAISS vector index
-- Faster semantic retrieval
-- Similarity scoring
-- Vector index persistence
-
----
-
-## ✅ v0.3 — Metadata-Aware Retrieval
-
-### Improvements
-
-- Page-aware PDF loading
-- Metadata-rich chunks
-- Document names
-- Page numbers
-- Chunk IDs
-- Source attribution
-- Improved retrieval display
-
-Example output:
-
-```
-Document
-Page
-Chunk ID
-Similarity Score
-Retrieved Chunk
-```
-
----
-
-## ✅ v0.4 — Hybrid Retrieval
-
-### Improvements
-
-- BM25 keyword retrieval
-- FAISS semantic retrieval
-- Hybrid score fusion
-- Normalized scoring
-- Semantic score display
-- BM25 score display
-- Hybrid score display
-
-Example output:
-
-```
-Semantic Score
-BM25 Score
-Hybrid Score
-```
-
----
-
-# 🏗️ Repository Structure
-
-```
-KnowledgeHub_RAG/
-
-├── data/
-│
-├── docs/
-│
-├── notebooks/
-│   ├── KnowledgeHub_RAG_v0.1.ipynb
-│   ├── KnowledgeHub_RAG_v0.2.ipynb
-│   ├── KnowledgeHub_RAG_v0.3.ipynb
-│   └── KnowledgeHub_RAG_v0.4.ipynb
-│
-├── src/
-│
-├── tests/
-│
-├── README.md
-├── requirements.txt
-└── LICENSE
-```
-
----
-
-# 🛠️ Technologies Used
-
-- Python
-- Google Colab
-- PyPDF
-- SentenceTransformers
-- Hugging Face Transformers
-- FAISS
-- BM25
-- NumPy
-
----
-
-# 🧠 RAG Evolution
+The project demonstrates the complete RAG workflow:
 
 ```
 PDF Documents
       │
       ▼
-Chunking
+Document Chunking
       │
       ▼
-Embeddings
+Sentence Embeddings
       │
       ▼
-FAISS
+FAISS Vector Search
       │
       ▼
-Metadata
+BM25 Keyword Search
       │
       ▼
-Hybrid Search
+Hybrid Retrieval
       │
       ▼
-Cross Encoder
+TinyLlama LLM
       │
       ▼
-Knowledge Assistant
+Natural Language Answer
+      │
+      ▼
+Source Attribution
 ```
 
 ---
 
-# 🎯 Learning Goals
+# ✨ Features
 
-This repository explores the major building blocks of Retrieval-Augmented Generation systems.
+- 📄 Multi-document PDF ingestion
+- ✂️ Intelligent text chunking
+- 🔍 Semantic search using FAISS
+- 🔎 Keyword retrieval using BM25
+- ⚖️ Hybrid retrieval scoring
+- 🤖 LLM-powered answer generation (TinyLlama)
+- 📚 Source attribution with document and page references
+- 💬 Interactive question-answering interface
 
-- Document ingestion
-- Chunking strategies
-- Embeddings
-- Semantic Search
+---
+
+# 🛠️ Tech Stack
+
+- Python
+- Google Colab
 - FAISS
-- Metadata
-- Hybrid Search
-- Re-ranking
-- Retrieval pipelines
-- Production deployment
+- Sentence Transformers
+- rank-bm25
+- Hugging Face Transformers
+- TinyLlama
+- PyTorch
 
 ---
 
-# 🚀 Upcoming Version
+# 📂 Project Structure
 
-## v0.5 — Cross-Encoder Re-ranking
+```
+KnowledgeHub_RAG/
 
-Planned improvements:
-
-- Re-rank retrieved chunks using a Cross-Encoder
-- Improve answer quality
-- Better query-passage relevance
-- Production-style retrieval pipeline
+│── notebooks/
+│     ├── KnowledgeHub_RAG_v0_1.ipynb
+│     ├── KnowledgeHub_RAG_v0_2.ipynb
+│     ├── KnowledgeHub_RAG_v0_3.ipynb
+│     ├── KnowledgeHub_RAG_v0_4.ipynb
+│     └── KnowledgeHub_RAG_v0_5.ipynb
+│
+│── docs/
+│
+│── src/
+│
+│── tests/
+│
+│── requirements.txt
+│── README.md
+│── LICENSE
+│── CHANGELOG.md
+```
 
 ---
 
-# 🌟 Future Roadmap
+# 📈 Development Roadmap
 
-- Conversational Memory
-- Streamlit UI
-- FastAPI Backend
-- Multi-format document support
-- Production deployment
-- Knowledge Assistant v1.0
+| Version | Status | Features |
+|----------|--------|----------|
+| ✅ v0.1 | Completed | Multi-document Semantic Search |
+| ✅ v0.2 | Completed | Metadata-aware Retrieval |
+| ✅ v0.3 | Completed | Hybrid Search (FAISS + BM25) |
+| ✅ v0.4 | Completed | Score Normalisation & Improved Retrieval |
+| ✅ v0.5 | Completed | LLM-powered Answer Generation (TinyLlama) |
+| 🔜 v0.6 | Planned | Conversation Memory |
+| 🔜 v0.7 | Planned | Streamlit Web Application |
+| 🔜 v0.8 | Planned | FastAPI Backend |
+| 🔜 v0.9 | Planned | Docker Deployment |
+| 🎯 v1.0 | Planned | KnowledgeHub Assistant |
+
+---
+
+# 💡 Example
+
+### Question
+
+> What algorithm was used for classification?
+
+### Answer
+
+```
+The classification system uses Gradient Boosted Decision Trees (GBDT).
+
+Three classifiers were developed for binary, three-class and four-class
+classification of binary neutron star merger remnants.
+
+The models use inspiral parameters such as total mass,
+mass ratio, tidal deformability and effective spin.
+```
+
+### Sources
+
+- FinalProjectReport.pdf (Page 6)
+- FinalProjectReport.pdf (Page 8)
+- FinalProjectReport.pdf (Page 9)
+
+---
+
+# 🎯 Current Capabilities
+
+- Multi-document retrieval
+- Hybrid semantic and keyword search
+- Context-aware answer generation
+- Grounded responses
+- Source attribution
+
+---
+
+# 🔮 Upcoming Features
+
+- Multi-turn conversation memory
+- Streamlit web application
+- REST API with FastAPI
+- Docker deployment
+- Multi-user KnowledgeHub Assistant
+
+---
+
+# 📜 License
+
+Released under the MIT License.
 
 ---
 
 # 👨‍💻 Author
 
 **Surendaranath Kanniyappan**
+GitHub: https://github.com/SK-Leonidas
 
 Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.
