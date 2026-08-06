@@ -1,0 +1,10 @@
+transformers
+torch
+sentence-transformers
+faiss-cpu
+rank-bm25
+PyMuPDF
+numpy
+pandas
+scikit-learn
+accelerate  

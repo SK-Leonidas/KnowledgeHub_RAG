@@ -1,175 +1,171 @@
-# 📚 KnowledgeHub RAG
+#KnowledgeHub RAG v0.6
 
-> A Retrieval-Augmented Generation (RAG) system that enables intelligent question answering over PDF documents using Hybrid Search and Large Language Models.
-
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-green)
-![SentenceTransformers](https://img.shields.io/badge/SentenceTransformers-Embeddings-orange)
-![TinyLlama](https://img.shields.io/badge/TinyLlama-LLM-purple)
-![License](https://img.shields.io/badge/License-MIT-red)
+A Retrieval-Augmented Generation (RAG) system for intelligent question answering over PDF documents using hybrid retrieval and TinyLlama.
 
 ---
 
-## 🚀 Overview
+## Overview
 
-KnowledgeHub RAG is an end-to-end Retrieval-Augmented Generation (RAG) project that retrieves relevant information from PDF documents and generates natural language answers using an instruction-tuned Large Language Model.
+KnowledgeHub is a modular Retrieval-Augmented Generation (RAG) system that allows users to upload research papers or PDF documents and ask natural language questions about their contents.
 
-The project demonstrates the complete RAG workflow:
+The system combines semantic retrieval, lexical retrieval, ranking fusion, context expansion, and a lightweight Large Language Model to generate grounded answers directly from the uploaded documents.
+
+Current Version: **v0.6**
+
+---
+
+## Features
+
+- PDF document ingestion
+- Intelligent document chunking
+- Sentence Transformer embeddings
+- FAISS semantic search
+- BM25 lexical retrieval
+- Hybrid retrieval pipeline
+- Weighted score fusion
+- Reciprocal Rank Fusion (RRF)
+- Query expansion
+- Context expansion
+- TinyLlama-powered answer generation
+- Context-grounded responses
+- Interactive command-line QA interface
+
+---
+
+## System Architecture
 
 ```
-PDF Documents
-      │
-      ▼
-Document Chunking
-      │
-      ▼
-Sentence Embeddings
-      │
-      ▼
-FAISS Vector Search
-      │
-      ▼
-BM25 Keyword Search
-      │
-      ▼
-Hybrid Retrieval
-      │
-      ▼
-TinyLlama LLM
-      │
-      ▼
-Natural Language Answer
-      │
-      ▼
-Source Attribution
+User Question
+        │
+        ▼
+Query Expansion
+        │
+        ▼
+Semantic Search (FAISS)
+        +
+Lexical Search (BM25)
+        │
+        ▼
+Weighted Score Fusion
+        │
+        ▼
+Reciprocal Rank Fusion (RRF)
+        │
+        ▼
+Context Expansion
+        │
+        ▼
+TinyLlama
+        │
+        ▼
+Grounded Answer
 ```
 
 ---
 
-# ✨ Features
+## Project Structure
 
-- 📄 Multi-document PDF ingestion
-- ✂️ Intelligent text chunking
-- 🔍 Semantic search using FAISS
-- 🔎 Keyword retrieval using BM25
-- ⚖️ Hybrid retrieval scoring
-- 🤖 LLM-powered answer generation (TinyLlama)
-- 📚 Source attribution with document and page references
-- 💬 Interactive question-answering interface
+```
+KnowledgeHub/
+│
+├── KnowledgeHub_v0.6.ipynb
+├── README.md
+├── CHANGELOG.md
+├── requirements.txt
+├── documents/
+│      ├── sample.pdf
+│
+└── outputs/
+```
 
 ---
 
-# 🛠️ Tech Stack
+## Technologies Used
 
-- Python
-- Google Colab
+### Retrieval
+
 - FAISS
-- Sentence Transformers
 - rank-bm25
-- Hugging Face Transformers
-- TinyLlama
-- PyTorch
+- Sentence Transformers
+- all-MiniLM-L6-v2
+
+### Language Model
+
+- TinyLlama-1.1B-Chat
+
+### Python Libraries
+
+- transformers
+- torch
+- PyMuPDF
+- numpy
+- pandas
 
 ---
 
-# 📂 Project Structure
+## Retrieval Pipeline
 
-```
-KnowledgeHub_RAG/
+The retrieval process consists of several stages:
 
-│── notebooks/
-│     ├── KnowledgeHub_RAG_v0_1.ipynb
-│     ├── KnowledgeHub_RAG_v0_2.ipynb
-│     ├── KnowledgeHub_RAG_v0_3.ipynb
-│     ├── KnowledgeHub_RAG_v0_4.ipynb
-│     └── KnowledgeHub_RAG_v0_5.ipynb
-│
-│── docs/
-│
-│── src/
-│
-│── tests/
-│
-│── requirements.txt
-│── README.md
-│── LICENSE
-│── CHANGELOG.md
-```
+1. Query Expansion
+2. Semantic Search (FAISS)
+3. BM25 Retrieval
+4. Weighted Score Fusion
+5. Reciprocal Rank Fusion (RRF)
+6. Context Expansion
+7. Top-k Context Selection
+
+The retrieved context is then supplied to TinyLlama for grounded answer generation.
 
 ---
 
-# 📈 Development Roadmap
+## Example
 
-| Version | Status | Features |
-|----------|--------|----------|
-| ✅ v0.1 | Completed | Multi-document Semantic Search |
-| ✅ v0.2 | Completed | Metadata-aware Retrieval |
-| ✅ v0.3 | Completed | Hybrid Search (FAISS + BM25) |
-| ✅ v0.4 | Completed | Score Normalisation & Improved Retrieval |
-| ✅ v0.5 | Completed | LLM-powered Answer Generation (TinyLlama) |
-| 🔜 v0.6 | Planned | Conversation Memory |
-| 🔜 v0.7 | Planned | Streamlit Web Application |
-| 🔜 v0.8 | Planned | FastAPI Backend |
-| 🔜 v0.9 | Planned | Docker Deployment |
-| 🎯 v1.0 | Planned | KnowledgeHub Assistant |
-
----
-
-# 💡 Example
-
-### Question
+Question
 
 > What algorithm was used for classification?
 
-### Answer
+Answer
 
-```
-The classification system uses Gradient Boosted Decision Trees (GBDT).
-
-Three classifiers were developed for binary, three-class and four-class
-classification of binary neutron star merger remnants.
-
-The models use inspiral parameters such as total mass,
-mass ratio, tidal deformability and effective spin.
-```
-
-### Sources
-
-- FinalProjectReport.pdf (Page 6)
-- FinalProjectReport.pdf (Page 8)
-- FinalProjectReport.pdf (Page 9)
+> Gradient Boosted Decision Trees (GBDT).
 
 ---
 
-# 🎯 Current Capabilities
+## Current Limitations
+
+- Supports PDF documents only
+- Uses a lightweight 1.1B parameter language model
+- Single-user notebook implementation
+- No persistent vector database
+- No conversational memory across sessions
+
+---
+
+## Future Work
 
 - Multi-document retrieval
-- Hybrid semantic and keyword search
-- Context-aware answer generation
-- Grounded responses
-- Source attribution
+- Cross-document reasoning
+- Streaming responses
+- Better reranking models
+- Metadata-aware retrieval
+- Web interface
+- Conversation memory
+- Larger instruction-tuned language models
 
 ---
 
-# 🔮 Upcoming Features
+## Version
 
-- Multi-turn conversation memory
-- Streamlit web application
-- REST API with FastAPI
-- Docker deployment
-- Multi-user KnowledgeHub Assistant
+Current Release
+
+**KnowledgeHub RAG v0.6**
 
 ---
 
-# 📜 License
-
-Released under the MIT License.
-
----
-
-# 👨‍💻 Author
+## Author
 
 **Surendaranath Kanniyappan**
+
 GitHub: https://github.com/SK-Leonidas
 
 Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.
