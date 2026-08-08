@@ -4,6 +4,38 @@ All notable changes to the KnowledgeHub project are documented in this file.
 
 ---
 
+# v0.6.1 — Conversational Retrieval-Augmented Generation
+
+Released: August 2026
+
+## Added
+
+- Conversational memory for multi-turn question answering
+- Conversation history integration into prompt construction
+- Support for follow-up questions without repeating previous context
+- Improved documentation describing current system limitations
+
+## Improved
+
+- Refined TinyLlama prompt for cleaner and more grounded responses
+- Improved generation stability through updated model configuration
+- Reduced prompt leakage during answer generation
+- Improved conversational experience during interactive chat sessions
+
+## Fixed
+
+- Removed unnecessary generation configuration warnings
+- Improved answer formatting
+- Better handling of conversational follow-up questions
+
+## Known Limitations
+
+- TinyLlama (1.1B) may occasionally generate unsupported details when summarising long contexts
+- Out-of-document questions may still be answered using the model's pretrained knowledge
+- No retrieval confidence threshold or "Don't Know" response mechanism yet
+
+---
+
 # v0.6 — Enhanced Retrieval-Augmented Generation
 
 Released: August 2026

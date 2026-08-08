@@ -1,6 +1,6 @@
-#KnowledgeHub RAG v0.6
+# KnowledgeHub RAG v0.6.1
 
-A Retrieval-Augmented Generation (RAG) system for intelligent question answering over PDF documents using hybrid retrieval and TinyLlama.
+A Retrieval-Augmented Generation (RAG) system for intelligent question answering over PDF documents using hybrid retrieval, conversational memory, and TinyLlama.
 
 ---
 
@@ -8,9 +8,9 @@ A Retrieval-Augmented Generation (RAG) system for intelligent question answering
 
 KnowledgeHub is a modular Retrieval-Augmented Generation (RAG) system that allows users to upload research papers or PDF documents and ask natural language questions about their contents.
 
-The system combines semantic retrieval, lexical retrieval, ranking fusion, context expansion, and a lightweight Large Language Model to generate grounded answers directly from the uploaded documents.
+The system combines semantic retrieval, lexical retrieval, ranking fusion, context expansion, conversational memory, and a lightweight Large Language Model to generate grounded answers directly from uploaded documents.
 
-Current Version: **v0.6**
+Current Version: **v0.6.1**
 
 ---
 
@@ -28,6 +28,8 @@ Current Version: **v0.6**
 - Context expansion
 - TinyLlama-powered answer generation
 - Context-grounded responses
+- Conversational memory
+- Multi-turn question answering
 - Interactive command-line QA interface
 
 ---
@@ -36,6 +38,9 @@ Current Version: **v0.6**
 
 ```
 User Question
+        │
+        ▼
+Conversation Memory
         │
         ▼
 Query Expansion
@@ -58,7 +63,7 @@ Context Expansion
 TinyLlama
         │
         ▼
-Grounded Answer
+Grounded Conversational Answer
 ```
 
 ---
@@ -68,7 +73,7 @@ Grounded Answer
 ```
 KnowledgeHub/
 │
-├── KnowledgeHub_v0.6.ipynb
+├── KnowledgeHub_v0.6.1.ipynb
 ├── README.md
 ├── CHANGELOG.md
 ├── requirements.txt
@@ -105,27 +110,36 @@ KnowledgeHub/
 
 ## Retrieval Pipeline
 
-The retrieval process consists of several stages:
+The conversational retrieval pipeline consists of the following stages:
 
-1. Query Expansion
-2. Semantic Search (FAISS)
-3. BM25 Retrieval
-4. Weighted Score Fusion
-5. Reciprocal Rank Fusion (RRF)
-6. Context Expansion
-7. Top-k Context Selection
+1. Conversation Memory
+2. Query Expansion
+3. Semantic Search (FAISS)
+4. BM25 Retrieval
+5. Weighted Score Fusion
+6. Reciprocal Rank Fusion (RRF)
+7. Context Expansion
+8. Top-k Context Selection
 
-The retrieved context is then supplied to TinyLlama for grounded answer generation.
+The retrieved context is then supplied to TinyLlama for grounded conversational answer generation.
 
 ---
 
 ## Example
 
-Question
+**Question**
 
 > What algorithm was used for classification?
 
-Answer
+**Answer**
+
+> Gradient Boosted Decision Trees (GBDT).
+
+**Follow-up Question**
+
+> What algorithm did he use?
+
+**Answer**
 
 > Gradient Boosted Decision Trees (GBDT).
 
@@ -137,7 +151,9 @@ Answer
 - Uses a lightweight 1.1B parameter language model
 - Single-user notebook implementation
 - No persistent vector database
-- No conversational memory across sessions
+- Conversation memory is available only during the current chat session
+- TinyLlama (1.1B) may occasionally generate unsupported details when summarising long contexts
+- Out-of-document questions may be answered using the model's pretrained knowledge
 
 ---
 
@@ -148,8 +164,10 @@ Answer
 - Streaming responses
 - Better reranking models
 - Metadata-aware retrieval
-- Web interface
-- Conversation memory
+- Web interface (Streamlit)
+- Retrieval confidence threshold
+- "Don't Know" response mode
+- Automated evaluation framework
 - Larger instruction-tuned language models
 
 ---
@@ -158,7 +176,7 @@ Answer
 
 Current Release
 
-**KnowledgeHub RAG v0.6**
+**KnowledgeHub RAG v0.6.1**
 
 ---
 
@@ -168,4 +186,4 @@ Current Release
 
 GitHub: https://github.com/SK-Leonidas
 
-Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.
+Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.**Surendaranath Kanniyappan**
