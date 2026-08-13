@@ -1,47 +1,60 @@
-# KnowledgeHub RAG v0.6.2 – Gold Set Evaluation
+# KnowledgeHub RAG v0.6.3 – Confidence-Gated RAG with a Stronger LLM
 
 ## Objective
 
-v0.6.2 adds a structured evaluation layer to the conversational RAG system introduced in v0.6.1.
+v0.6.3 improves the reliability of the RAG pipeline by addressing two major limitations identified during the v0.6.2 evaluation.
 
-The goal of this release is to evaluate whether the system retrieves the correct document evidence and generates grounded answers for both answerable and unanswerable questions. This establishes a repeatable baseline for identifying retrieval failures, hallucinations, and weaknesses in the generation model before introducing further improvements.
+The first improvement replaces TinyLlama with a stronger instruction-tuned language model (**Qwen2.5-3B-Instruct**) to improve grounded answer generation.
+
+The second introduces a **retrieval-confidence gate** that prevents the language model from answering questions when insufficient supporting evidence has been retrieved. Instead of relying solely on prompt instructions to avoid hallucinations, the system now decides whether to answer before the LLM is invoked.
+
+The conversational retrieval pipeline introduced in earlier versions remains unchanged.
 
 ---
 
 ## What Changed in this Version
 
-### Added
+### LLM Improvements
 
-- Gold evaluation dataset (`gold_eval.json`)
-- Answerable document questions
-- Unanswerable and out-of-document questions
-- Expected answers and keyword-based evaluation
-- Expected source pages and chunks
-- Retrieval evaluation
-- Generation evaluation
-- End-to-end `evaluate_rag()` benchmarking pipeline
+- Replaced **TinyLlama-1.1B-Chat** with **Qwen2.5-3B-Instruct**
+- Switched from raw prompt completion to **chat-template prompting**
+- Improved instruction following and grounded answer generation
+- Fixed generation decoding by decoding only newly generated tokens
 
-### Evaluation Metrics
+### Hallucination Reduction
 
-- Retrieval Accuracy
-- Generation Accuracy
+- Added a **retrieval-confidence gate**
+- Questions with insufficient retrieval confidence bypass the LLM entirely
+- Unsupported questions now return the standard document-not-found response
+- Hallucination prevention is no longer dependent on prompt compliance
 
-### Preserved from v0.6.1
+### Confidence Calibration
 
+- Added confidence-score analysis using the existing gold evaluation dataset
+- Visualises confidence distributions for answerable and unanswerable questions
+- Enables empirical selection of the confidence threshold instead of manual tuning
+
+### Pipeline Integration
+
+- Interactive QA now uses the confidence-gated pipeline
+- `evaluate_rag()` also evaluates the complete confidence-gated workflow
+- Gold-set evaluation now measures both retrieval quality and refusal behaviour
+
+### Preserved from v0.6.2
+
+- Gold evaluation framework
 - Conversation memory
 - Follow-up question handling
+- Query expansion
 - FAISS semantic retrieval
 - BM25 lexical retrieval
-- Hybrid retrieval
-- Query expansion
 - Weighted score fusion
 - Reciprocal Rank Fusion (RRF)
 - Context expansion
-- TinyLlama answer generation
 
 ---
 
-## Evaluation Workflow
+## Updated Workflow
 
 ```text
 User Question
@@ -67,64 +80,53 @@ Reciprocal Rank Fusion (RRF)
 Context Expansion
         │
         ▼
-TinyLlama Response
+Retrieval Confidence
         │
-        ▼
-Gold Set Evaluation
-        │
-        ▼
-Retrieval Accuracy + Generation Accuracy
-```
-
----
-
-## Example Evaluation
-
-```text
-Question:
-What algorithm was used for classification?
-
-Retrieval : PASS
-
-Generated Answer:
-Gradient Boosted Decision Trees (GBDT).
-
-Generation : PASS
+        ├───────────────┐
+        │               │
+ Confidence ≥ Threshold  Confidence < Threshold
+        │               │
+        ▼               ▼
+Qwen2.5-3B-Instruct     Return
+        │               "I could not find that
+        ▼                information in the
+Grounded Response        provided document."
 ```
 
 ---
 
 ## Why this Version Matters
 
-v0.6.2 transforms KnowledgeHub from a system that can be demonstrated manually into one that can be evaluated systematically.
+The v0.6.2 evaluation highlighted that prompt engineering alone was insufficient to prevent hallucinations. Even when explicitly instructed not to guess, the language model occasionally generated unsupported information for questions whose answers were absent from the document.
 
-The automated evaluation framework provides quantitative measurements of retrieval and generation performance, making future improvements measurable instead of subjective.
+v0.6.3 moves hallucination control outside the language model by introducing retrieval-confidence gating. The decision to answer is now based on retrieval evidence rather than model behaviour, resulting in a more reliable and explainable RAG pipeline.
 
-This release establishes the first evaluation baseline against which future retrieval strategies, language models, confidence thresholds, and hallucination mitigation techniques can be compared.
+Replacing TinyLlama with Qwen2.5-3B-Instruct also significantly improves instruction following and answer quality while preserving the existing retrieval architecture.
 
 ---
 
 ## Current Limitations
 
-- Keyword-based evaluation is heuristic rather than semantic.
-- TinyLlama may hallucinate on unsupported or out-of-document questions.
-- Gold evaluation set is manually curated.
-- Supports evaluation on one document at a time.
+- Confidence threshold is a single global value.
+- Evaluation remains focused on a single PDF document.
+- Retrieval confidence is based on retrieval scores only and does not incorporate generation uncertainty.
+- Notebook-based implementation without a user interface.
 
 ---
 
-## Next Version (v0.6.3)
+## Next Version (v0.7)
 
-- Retrieval confidence scoring
-- Confidence thresholding
-- "Don't Know" response mode
-- Hallucination reduction for unsupported questions
+- Streamlit web application
+- Upload-your-own PDF interface
+- Persistent document indexing
+- Improved user experience
+- Session-based document management
 
 ---
 
 ## Version
 
-**KnowledgeHub RAG v0.6.2**
+**KnowledgeHub RAG v0.6.3**
 
 ---
 
