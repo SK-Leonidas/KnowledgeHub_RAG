@@ -7,4 +7,4 @@ PyMuPDF
 numpy
 pandas
 scikit-learn
-accelerate  
+accelerate
