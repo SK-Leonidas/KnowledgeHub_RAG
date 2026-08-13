@@ -1,53 +1,46 @@
-# KnowledgeHub RAG v0.6.3 – Confidence-Gated RAG with a Stronger LLM
+# KnowledgeHub RAG v0.6.4 – Context Assembly Fix & Engineering Hardening
 
 ## Objective
 
-v0.6.3 improves the reliability of the RAG pipeline by addressing two major limitations identified during the v0.6.2 evaluation.
+v0.6.4 focuses on improving the reliability, efficiency, and maintainability of the RAG system before moving towards a user-facing application.
 
-The first improvement replaces TinyLlama with a stronger instruction-tuned language model (**Qwen2.5-3B-Instruct**) to improve grounded answer generation.
+This release fixes issues discovered during evaluation, improves context construction for answer generation, introduces engineering enhancements such as index persistence and model caching, and prepares the codebase for the upcoming Streamlit application.
 
-The second introduces a **retrieval-confidence gate** that prevents the language model from answering questions when insufficient supporting evidence has been retrieved. Instead of relying solely on prompt instructions to avoid hallucinations, the system now decides whether to answer before the LLM is invoked.
-
-The conversational retrieval pipeline introduced in earlier versions remains unchanged.
+The conversational retrieval pipeline, confidence-gated generation, and Qwen2.5 language model introduced in v0.6.3 remain unchanged.
 
 ---
 
 ## What Changed in this Version
 
-### LLM Improvements
+### RAG Pipeline Improvements
 
-- Replaced **TinyLlama-1.1B-Chat** with **Qwen2.5-3B-Instruct**
-- Switched from raw prompt completion to **chat-template prompting**
-- Improved instruction following and grounded answer generation
-- Fixed generation decoding by decoding only newly generated tokens
+- Fixed context assembly so the language model receives context from the top-ranked retrieved documents instead of only neighbouring chunks from the highest-ranked result.
+- Improved query expansion by adding aliases and terminology for real gravitational-wave events (e.g. GW170817 and GW190425).
+- Added an author-name diagnostic utility to distinguish PDF extraction issues from generation errors.
 
-### Hallucination Reduction
+### Performance Improvements
 
-- Added a **retrieval-confidence gate**
-- Questions with insufficient retrieval confidence bypass the LLM entirely
-- Unsupported questions now return the standard document-not-found response
-- Hallucination prevention is no longer dependent on prompt compliance
+- Added persistent FAISS index caching to avoid rebuilding embeddings when source documents remain unchanged.
+- Added model caching to prevent reloading embedding and language models during notebook reruns.
+- Added end-to-end latency measurement for each question.
 
-### Confidence Calibration
+### Engineering Improvements
 
-- Added confidence-score analysis using the existing gold evaluation dataset
-- Visualises confidence distributions for answerable and unanswerable questions
-- Enables empirical selection of the confidence threshold instead of manual tuning
+- Generated a pinned `requirements.txt` for reproducible environments.
+- Added graceful error handling for answer generation and interactive question answering.
+- Improved handling of invalid or empty user input.
 
-### Pipeline Integration
+### Preserved from v0.6.3
 
-- Interactive QA now uses the confidence-gated pipeline
-- `evaluate_rag()` also evaluates the complete confidence-gated workflow
-- Gold-set evaluation now measures both retrieval quality and refusal behaviour
-
-### Preserved from v0.6.2
-
-- Gold evaluation framework
+- Qwen2.5-3B-Instruct
+- Confidence-gated answer generation
+- "Don't Know" response mode
+- Gold-set evaluation framework
 - Conversation memory
 - Follow-up question handling
-- Query expansion
 - FAISS semantic retrieval
 - BM25 lexical retrieval
+- Query expansion
 - Weighted score fusion
 - Reciprocal Rank Fusion (RRF)
 - Context expansion
@@ -77,40 +70,43 @@ Weighted Score Fusion
 Reciprocal Rank Fusion (RRF)
         │
         ▼
-Context Expansion
+Context Assembly
         │
         ▼
 Retrieval Confidence
         │
         ├───────────────┐
         │               │
- Confidence ≥ Threshold  Confidence < Threshold
+Confidence ≥ Threshold  Confidence < Threshold
         │               │
         ▼               ▼
 Qwen2.5-3B-Instruct     Return
         │               "I could not find that
         ▼                information in the
 Grounded Response        provided document."
+        │
+        ▼
+Latency Measurement
 ```
 
 ---
 
 ## Why this Version Matters
 
-The v0.6.2 evaluation highlighted that prompt engineering alone was insufficient to prevent hallucinations. Even when explicitly instructed not to guess, the language model occasionally generated unsupported information for questions whose answers were absent from the document.
+Earlier releases primarily focused on retrieval quality and hallucination reduction.
 
-v0.6.3 moves hallucination control outside the language model by introducing retrieval-confidence gating. The decision to answer is now based on retrieval evidence rather than model behaviour, resulting in a more reliable and explainable RAG pipeline.
+v0.6.4 strengthens the engineering foundation of the project by ensuring the language model receives better-assembled context, reducing unnecessary computation through caching, improving robustness with error handling, and introducing reproducible environments.
 
-Replacing TinyLlama with Qwen2.5-3B-Instruct also significantly improves instruction following and answer quality while preserving the existing retrieval architecture.
+These improvements prepare the project for migration from an experimental notebook into an interactive application.
 
 ---
 
 ## Current Limitations
 
-- Confidence threshold is a single global value.
-- Evaluation remains focused on a single PDF document.
-- Retrieval confidence is based on retrieval scores only and does not incorporate generation uncertainty.
-- Notebook-based implementation without a user interface.
+- Evaluation has been performed on a single PDF document.
+- Confidence threshold remains a global value.
+- Retrieval quality may still vary depending on document structure.
+- Notebook-based implementation.
 
 ---
 
@@ -118,15 +114,15 @@ Replacing TinyLlama with Qwen2.5-3B-Instruct also significantly improves instruc
 
 - Streamlit web application
 - Upload-your-own PDF interface
-- Persistent document indexing
-- Improved user experience
+- Dynamic document ingestion
 - Session-based document management
+- Interactive user interface
 
 ---
 
 ## Version
 
-**KnowledgeHub RAG v0.6.3**
+**KnowledgeHub RAG v0.6.4**
 
 ---
 
