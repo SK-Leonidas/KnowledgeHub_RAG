@@ -1,42 +1,49 @@
-# KnowledgeHub RAG v0.6.1
+# KnowledgeHub RAG v0.6.2 – Gold Set Evaluation
 
-A Retrieval-Augmented Generation (RAG) system for intelligent question answering over PDF documents using hybrid retrieval, conversational memory, and TinyLlama.
+## Objective
 
----
+v0.6.2 adds a structured evaluation layer to the conversational RAG system introduced in v0.6.1.
 
-## Overview
-
-KnowledgeHub is a modular Retrieval-Augmented Generation (RAG) system that allows users to upload research papers or PDF documents and ask natural language questions about their contents.
-
-The system combines semantic retrieval, lexical retrieval, ranking fusion, context expansion, conversational memory, and a lightweight Large Language Model to generate grounded answers directly from uploaded documents.
-
-Current Version: **v0.6.1**
+The goal of this release is to evaluate whether the system retrieves the correct document evidence and generates grounded answers for both answerable and unanswerable questions. This establishes a repeatable baseline for identifying retrieval failures, hallucinations, and weaknesses in the generation model before introducing further improvements.
 
 ---
 
-## Features
+## What Changed in this Version
 
-- PDF document ingestion
-- Intelligent document chunking
-- Sentence Transformer embeddings
-- FAISS semantic search
+### Added
+
+- Gold evaluation dataset (`gold_eval.json`)
+- Answerable document questions
+- Unanswerable and out-of-document questions
+- Expected answers and keyword-based evaluation
+- Expected source pages and chunks
+- Retrieval evaluation
+- Generation evaluation
+- End-to-end `evaluate_rag()` benchmarking pipeline
+
+### Evaluation Metrics
+
+- Retrieval Accuracy
+- Generation Accuracy
+
+### Preserved from v0.6.1
+
+- Conversation memory
+- Follow-up question handling
+- FAISS semantic retrieval
 - BM25 lexical retrieval
-- Hybrid retrieval pipeline
+- Hybrid retrieval
+- Query expansion
 - Weighted score fusion
 - Reciprocal Rank Fusion (RRF)
-- Query expansion
 - Context expansion
-- TinyLlama-powered answer generation
-- Context-grounded responses
-- Conversational memory
-- Multi-turn question answering
-- Interactive command-line QA interface
+- TinyLlama answer generation
 
 ---
 
-## System Architecture
+## Evaluation Workflow
 
-```
+```text
 User Question
         │
         ▼
@@ -46,9 +53,9 @@ Conversation Memory
 Query Expansion
         │
         ▼
-Semantic Search (FAISS)
+FAISS Semantic Search
         +
-Lexical Search (BM25)
+BM25 Retrieval
         │
         ▼
 Weighted Score Fusion
@@ -60,123 +67,64 @@ Reciprocal Rank Fusion (RRF)
 Context Expansion
         │
         ▼
-TinyLlama
+TinyLlama Response
         │
         ▼
-Grounded Conversational Answer
+Gold Set Evaluation
+        │
+        ▼
+Retrieval Accuracy + Generation Accuracy
 ```
 
 ---
 
-## Project Structure
+## Example Evaluation
 
+```text
+Question:
+What algorithm was used for classification?
+
+Retrieval : PASS
+
+Generated Answer:
+Gradient Boosted Decision Trees (GBDT).
+
+Generation : PASS
 ```
-KnowledgeHub/
-│
-├── KnowledgeHub_v0.6.1.ipynb
-├── README.md
-├── CHANGELOG.md
-├── requirements.txt
-├── documents/
-│      ├── sample.pdf
-│
-└── outputs/
-```
 
 ---
 
-## Technologies Used
+## Why this Version Matters
 
-### Retrieval
+v0.6.2 transforms KnowledgeHub from a system that can be demonstrated manually into one that can be evaluated systematically.
 
-- FAISS
-- rank-bm25
-- Sentence Transformers
-- all-MiniLM-L6-v2
+The automated evaluation framework provides quantitative measurements of retrieval and generation performance, making future improvements measurable instead of subjective.
 
-### Language Model
-
-- TinyLlama-1.1B-Chat
-
-### Python Libraries
-
-- transformers
-- torch
-- PyMuPDF
-- numpy
-- pandas
-
----
-
-## Retrieval Pipeline
-
-The conversational retrieval pipeline consists of the following stages:
-
-1. Conversation Memory
-2. Query Expansion
-3. Semantic Search (FAISS)
-4. BM25 Retrieval
-5. Weighted Score Fusion
-6. Reciprocal Rank Fusion (RRF)
-7. Context Expansion
-8. Top-k Context Selection
-
-The retrieved context is then supplied to TinyLlama for grounded conversational answer generation.
-
----
-
-## Example
-
-**Question**
-
-> What algorithm was used for classification?
-
-**Answer**
-
-> Gradient Boosted Decision Trees (GBDT).
-
-**Follow-up Question**
-
-> What algorithm did he use?
-
-**Answer**
-
-> Gradient Boosted Decision Trees (GBDT).
+This release establishes the first evaluation baseline against which future retrieval strategies, language models, confidence thresholds, and hallucination mitigation techniques can be compared.
 
 ---
 
 ## Current Limitations
 
-- Supports PDF documents only
-- Uses a lightweight 1.1B parameter language model
-- Single-user notebook implementation
-- No persistent vector database
-- Conversation memory is available only during the current chat session
-- TinyLlama (1.1B) may occasionally generate unsupported details when summarising long contexts
-- Out-of-document questions may be answered using the model's pretrained knowledge
+- Keyword-based evaluation is heuristic rather than semantic.
+- TinyLlama may hallucinate on unsupported or out-of-document questions.
+- Gold evaluation set is manually curated.
+- Supports evaluation on one document at a time.
 
 ---
 
-## Future Work
+## Next Version (v0.6.3)
 
-- Multi-document retrieval
-- Cross-document reasoning
-- Streaming responses
-- Better reranking models
-- Metadata-aware retrieval
-- Web interface (Streamlit)
-- Retrieval confidence threshold
+- Retrieval confidence scoring
+- Confidence thresholding
 - "Don't Know" response mode
-- Automated evaluation framework
-- Larger instruction-tuned language models
+- Hallucination reduction for unsupported questions
 
 ---
 
 ## Version
 
-Current Release
-
-**KnowledgeHub RAG v0.6.1**
+**KnowledgeHub RAG v0.6.2**
 
 ---
 
@@ -186,4 +134,4 @@ Current Release
 
 GitHub: https://github.com/SK-Leonidas
 
-Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.**Surendaranath Kanniyappan**
+Building Retrieval-Augmented Generation systems from scratch while documenting every engineering milestone.
